@@ -23,15 +23,7 @@
         <label for="amount">Loan Amount</label>
         <div class="input-group">
           <span class="input-group-addon">$</span>
-          <input type="text" id="amount" class="form-control" value='150000'>
-        </div>
-      </div>
-
-      <div class='form-group col-sm-2'>
-        <label for="rate">Interest Rate</label>
-        <div class="input-group">
-          <input type="number" step='0.1' id="rate" class="form-control" value='5.9'>
-          <span class="input-group-addon">%</span>
+          <input type="text" id="amount" class="form-control" value='150,000'>
         </div>
       </div>
 
@@ -40,6 +32,14 @@
         <div class="input-group">
           <input type="number" id="term" class="form-control" value='15'>
           <span class="input-group-addon">Years</span>
+        </div>
+      </div>
+
+      <div class='form-group col-sm-2'>
+        <label for="rate">Interest Rate</label>
+        <div class="input-group">
+          <input type="number" step='0.1' id="rate" class="form-control" value='5.9'>
+          <span class="input-group-addon">%</span>
         </div>
       </div>
 
@@ -168,14 +168,20 @@
       var table = $('#schedule');
       var template;
 
+      var getInput = function (value) {
+        var num = value.match( /\d|\./g);
+        num = num.join("");
+        return num;
+      }
+
       var render = function() {
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
         var data = finance.calculateAmortization(
-        amount.val().replace( /^\D+/g, ''),
-        term.val().replace( /^\D+/g, '') * 12,
-        rate.val().replace( /^\D+/g, ''),
-        new Date(year.val(), month.val() -1, 1)
+          getInput(amount.val()),
+          getInput(term.val()) * 12,
+          getInput(rate.val()),
+          new Date(year.val(), month.val() -1, 1)
         );
 
         /* Handle display by year functionality */
@@ -214,7 +220,6 @@
           }
         }
 
-        //months[item.date.getMonth()] + ", " + item.date.getFullYear()
         /* render template and replace table's html with result */
         table.html(template({items: data}));
       }
