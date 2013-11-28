@@ -23,7 +23,7 @@
         <label for="amount">Loan Amount</label>
         <div class="input-group">
           <span class="input-group-addon">$</span>
-          <input type="number" id="amount" class="form-control" value='150000'>
+          <input type="text" id="amount" class="form-control" value='150000'>
         </div>
       </div>
 
@@ -114,6 +114,10 @@
     <table id="schedule" class='table table-bordered table-striped table-responsive table-hover'>
     </table>
 
+    <footer class='text-right' style='margin-bottom: 1.428em;'>
+      <hr>
+      <small>&copy; <a href="http://www.cpagardens.com">CPA Gardens</a></small>
+    </footer>
   </div>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -121,26 +125,23 @@
   <script src="js/underscore.min.js"></script>
   <script src="js/financejs/finance.js"></script>
   <script type="text/template" id="template">
-  <% var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; %>
+  <%  %>
     <thead>
       <tr>
         <td>Date</td>
         <td>Payment</td>
-        <td>Principle</td>
         <td>Interest</td>
+        <td>Principle</td>
         <td>Balance</td>
       </tr>
     </thead>
     <tbody>
       <% _.each( rc.items, function( item ){ %>
         <tr>
-          <td>
-          <% ; %>
-          <%- months[item.date.getMonth()] + ", " + item.date.getFullYear() %>
-          </td>
+          <td> <%- item.date %> </td>
           <td><%- finance.format(item.payment, 'USD')  %></td>
-          <td><%- finance.format(item.paymentToPrinciple, 'USD') %></td>
           <td><%- finance.format(item.paymentToInterest, 'USD') %></td>
+          <td><%- finance.format(item.paymentToPrinciple, 'USD') %></td>
           <td><%- finance.format(item.principle, 'USD') %></td>
         </tr>
       <% }); %>
@@ -163,32 +164,62 @@
       var term = $('#term');
       var month = $('#month');
       var year = $('#year');
-      var display = $('input[name=display]');
+      var display = $('*[name=display]');
       var table = $('#schedule');
       var template;
 
       var render = function() {
-        /* Run calculation and return array */
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
         var data = finance.calculateAmortization(
-        parseInt(amount.val()),
-        parseInt(term.val()) * 12,
-        parseFloat(rate.val()),
-        new Date(parseInt(year.val()), parseInt(month.val()), 0)
+        amount.val().replace( /^\D+/g, ''),
+        term.val().replace( /^\D+/g, '') * 12,
+        rate.val().replace( /^\D+/g, ''),
+        new Date(year.val(), month.val() -1, 1)
         );
 
+        /* Handle display by year functionality */
+        if ($('*[name=display]:checked').val() == 'year') {
+          var schedule = [];
+          var startingDate = data[0].date !== undefined ? data[0].date : Date();
+          var obj = {date: startingDate, interest: 0, payment: 0, paymentToInterest: 0, paymentToPrinciple: 0, principle: 0};
+          for (var i=0; i<data.length; i++) {
+            if (obj.date.getFullYear() == data[i].date.getFullYear()) {
+              obj.interest += data[i].interest;
+              obj.payment += data[i].payment;
+              obj.paymentToInterest += data[i].paymentToInterest;
+              obj.paymentToPrinciple += data[i].paymentToPrinciple;
+              obj.principle = data[i].principle;
+            } else {
+              schedule.push(obj);
+              var obj = { date: data[i].date,
+               interest: data[i].interest,
+               payment: data[i].payment,
+               paymentToInterest: data[i].paymentToInterest,
+               paymentToPrinciple: data[i].paymentToPrinciple,
+               principle: data[i].principle
+              };
+            }
+          }
+          /* The last element will never be pushed on the array */
+          schedule.push(obj);
+          data = schedule;
+        }
+
+        //months[item.date.getMonth()] + ", " + item.date.getFullYear()
         /* render template and replace table's html with result */
         table.html(template({items: data}));
       }
 
+      /* Attach handlers */
+      $(amount).add(rate).add(term).add(month).add(year).add(display).bind('keyup change', function() {
+        render();
+      });
       $(document).ready(function() {
         /* The variable tempate results will be accessable through this variable */
         _.templateSettings.variable = "rc";
         /*  pre-compile template for performance */
           template = _.template( $("#template").html() );
-        /* Attach handlers */
-        $([amount, rate, term, month, year, display]).on('change', function() {
-          render();
-        });
         /* Render the schedule with default values when document loaded. */
         render();
       });
