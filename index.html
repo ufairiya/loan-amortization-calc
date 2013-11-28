@@ -149,9 +149,9 @@
     <tfoot>
       <tr>
         <td>&nbsp;</td>
-        <td><%- rc.paymentTotal %></td>
-        <td><%- rc.principleTotal %></td>
-        <td><%- rc.interestTotal %></td>
+        <td><%- finance.format(rc.totalPayments, 'USD') %></td>
+        <td><%- finance.format(rc.totalInterest, 'USD') %></td>
+        <td><%- finance.format(rc.totalPrinciple, 'USD') %></td>
         <td>&nbsp;</td>
       </tr>
     </tfoot>
@@ -170,6 +170,9 @@
 
       var getInput = function (value) {
         var num = value.match( /\d|\./g);
+        if (num == null) {
+          return 0;
+        }
         num = num.join("");
         return num;
       }
@@ -184,6 +187,13 @@
           new Date(year.val(), month.val() -1, 1)
         );
 
+        /* Calculate the tallys */
+        var totalInterest = data.length > 0 ? data[data.length-1].interest : 0;
+        var totalPayments = data.length > 0 ? data[0].payment * data.length: 0;
+        var totalPaymentsNum = data.length > 0 ? data.length: 0;
+        var totalPrinciple = getInput(amount.val());
+        var payoffDate = data.length > 0 ? months[data[data.length-1].date.getMonth()] + ", " + data[data.length-1].date.getFullYear() : '';
+
         /* Handle display by year functionality */
         if ($('*[name=display]:checked').val() == 'year') {
           var schedule = [];
@@ -193,7 +203,7 @@
           var obj = {date: startingDate, interest: 0, payment: 0, paymentToInterest: 0, paymentToPrinciple: 0, principle: 0};
           for (var i=0; i<data.length; i++) {
             if (obj.date == data[i].date.getFullYear()) {
-              obj.interest += data[i].interest;
+              obj.interest = data[i].interest;
               obj.payment += data[i].payment;
               obj.paymentToInterest += data[i].paymentToInterest;
               obj.paymentToPrinciple += data[i].paymentToPrinciple;
@@ -221,7 +231,12 @@
         }
 
         /* render template and replace table's html with result */
-        table.html(template({items: data}));
+        table.html(template({
+          items: data,
+          totalInterest: totalInterest,
+          totalPayments: totalPayments,
+          totalPrinciple: totalPrinciple
+        }));
       }
 
       /* Attach handlers */
