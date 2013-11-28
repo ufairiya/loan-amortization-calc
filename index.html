@@ -98,13 +98,13 @@
       <div class='form-group col-sm-2'>
         <div class="radio">
           <label>
-          <input type="radio" name="display" id="display1" value="month" checked>
+          <input type="radio" name="display" id="display1" value="month">
             Show by month
           </label>
         </div>
         <div class="radio">
           <label>
-          <input type="radio" name="display" id="display2" value="year">
+          <input type="radio" name="display" id="display2" value="year" checked>
             Show by year
           </label>
         </div>
@@ -121,7 +121,7 @@
   </div>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+  <!--<script src="bootstrap/dist/js/bootstrap.min.js"></script>-->
   <script src="js/underscore.min.js"></script>
   <script src="js/financejs/finance.js"></script>
   <script type="text/template" id="template">
@@ -181,10 +181,12 @@
         /* Handle display by year functionality */
         if ($('*[name=display]:checked').val() == 'year') {
           var schedule = [];
-          var startingDate = data[0].date !== undefined ? data[0].date : Date();
+          /* Ensure Loan term = 0 is handled gracefully */
+          var startingDate = data.length > 0 ? data[0].date.getFullYear() : new Date().getFullYear();
+
           var obj = {date: startingDate, interest: 0, payment: 0, paymentToInterest: 0, paymentToPrinciple: 0, principle: 0};
           for (var i=0; i<data.length; i++) {
-            if (obj.date.getFullYear() == data[i].date.getFullYear()) {
+            if (obj.date == data[i].date.getFullYear()) {
               obj.interest += data[i].interest;
               obj.payment += data[i].payment;
               obj.paymentToInterest += data[i].paymentToInterest;
@@ -192,7 +194,8 @@
               obj.principle = data[i].principle;
             } else {
               schedule.push(obj);
-              var obj = { date: data[i].date,
+              var obj = {
+               date: data[i].date.getFullYear(),
                interest: data[i].interest,
                payment: data[i].payment,
                paymentToInterest: data[i].paymentToInterest,
@@ -204,6 +207,11 @@
           /* The last element will never be pushed on the array */
           schedule.push(obj);
           data = schedule;
+        } else {
+          /* Format the date for month view  */
+          for (var i=0; i<data.length; i++) {
+            data[i].date = months[data[i].date.getMonth()] + ", " + data[i].date.getFullYear();
+          }
         }
 
         //months[item.date.getMonth()] + ", " + item.date.getFullYear()
