@@ -7,7 +7,8 @@
       var year = $('#year');
       var display = $('*[name=display]');
       var table = $('#schedule');
-      var tableTemplate;
+      var summery = $('#summery');
+      var tableTemplate, summeryTemplate;
 
       var getInput = function (value) {
         var num = value.match( /\d|\./g);
@@ -29,6 +30,7 @@
         );
 
         /* Calculate the tallys */
+        var monthlyPayment = data.length > 0 ? data[0].payment : 0;
         var totalInterest = data.length > 0 ? data[data.length-1].interest : 0;
         var totalPayments = data.length > 0 ? data[0].payment * data.length: 0;
         var totalPaymentsNum = data.length > 0 ? data.length: 0;
@@ -71,6 +73,14 @@
           }
         }
 
+        summery.html(summeryTemplate({
+          monthlyPayment: monthlyPayment,
+          totalPayments: totalPayments,
+          totalPaymentsNum: totalPaymentsNum,
+          totalInterest: totalInterest,
+          payoffDate: payoffDate
+        }));
+
         /* render template and replace table's html with result */
         table.html(tableTemplate({
           items: data,
@@ -89,6 +99,7 @@
         _.templateSettings.variable = "rc";
         /*  pre-compile template for performance */
           tableTemplate = _.template( $("#table-template").html() );
+          summeryTemplate = _.template( $("#summery-template").html() );
           // summeryTemplate = _.template( $("#table-template").html() );
         /* Render the schedule with default values when document loaded. */
         render();

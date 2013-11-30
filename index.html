@@ -2,12 +2,29 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Amorization Schedule, Printable - CPA Gardens</title>
-  <meta name="description" content="Amorization calculator with printable schedule.">
+  <title>Mortgage/Loan Calculator, Print-friendly Amorization Schedule</title>
+  <meta name="description" content="morgage loan calculator with print-friedly amorization schedule. &bulet; CPA Gardens">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <link href="css/bootstrap.css" rel="stylesheet">
   <style>
+  form { margin-bottom: 0; }
+  .summery {
+    display: block;
+    padding: 9px 14px;
+    margin-bottom: 14px;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+  }
+  .summery h3 {
+    margin: 10px 0;
+  }
+  /* override grid system to act as 12col grid for this block */
+  @media (min-width: 768px) {
+    .summery .col-sm-3 {
+      width: 25%;
+    }
+  }
   #schedule thead td, #schedule tfoot td {font-weight: bold; }
   </style>
 </head>
@@ -15,7 +32,7 @@
   <div class="container">
 
     <div class="page-header">
-      <h1 id="page-title">Amortization Schedule</h1>
+      <h2 id="page-title">Loan Amortization Schedule</h2>
     </div>
 
     <form id="amorization-form" role="form" class='row'>
@@ -111,6 +128,8 @@
       </div>
     </form>
 
+    <div id='summery' class='summery text-center'></div>
+
     <table id="schedule" class='table table-bordered table-striped table-responsive table-hover'>
     </table>
 
@@ -125,8 +144,27 @@
   <script src="js/underscore.min.js"></script>
   <script src="js/financejs/finance.js"></script>
   <script src="js/app.js"> </script>
+  <script type="text/template" id="summery-template">
+    <div class='row'>
+      <div class='col-sm-3'>
+      <h3><%- finance.format(rc.monthlyPayment, 'USD') %> </h3>
+        Monthly Principal &amp; Interest
+      </div>
+      <div class='col-sm-3'>
+        <h3><%- finance.format(rc.totalPayments, 'USD') %> </h3>
+        Total of <%- rc.totalPaymentsNum %> Payments
+      </div>
+      <div class='col-sm-3'>
+        <h3><%- finance.format(rc.totalInterest, 'USD') %> </h3>
+        Total Interest Paid
+      </div>
+      <div class='col-sm-3'>
+        <h3><%- rc.payoffDate %> </h3>
+        Pay-off Date
+      </div>
+    </div>
+  </script>
   <script type="text/template" id="table-template">
-  <%  %>
     <thead>
       <tr>
         <td>Date</td>
