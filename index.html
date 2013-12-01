@@ -34,7 +34,12 @@ include panel with taxes/insurance: prop tax, homeowners insurance
         <label for="term">Loan Term</label>
         <div class="input-group">
           <input type="number" id="term" class="form-control" value='180'>
-          <span class="input-group-addon">Months</span>
+          <div class="input-group-btn">
+            <button type="button" id="termtime" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Years <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Months </a></li>
+              </ul>
+          </div><!-- /btn-group -->
         </div>
       </div>
 
@@ -128,7 +133,7 @@ include panel with taxes/insurance: prop tax, homeowners insurance
   </div>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <!--<script src="bootstrap/dist/js/bootstrap.min.js"></script>-->
+  <script src="bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="js/underscore.min.js"></script>
   <script src="js/financejs/finance.js"></script>
   <script src="js/app.js"> </script>

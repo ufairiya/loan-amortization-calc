@@ -21,6 +21,8 @@ form { margin-bottom: 0; }
 }
 .table thead td, .table tfoot td {font-weight: bold; }
 
+#term { padding-right: 0; }
+
 @media print {
   body, table { font-size: 12px; }
   h1 { font-size: 31.2px; margin: 16.8px 0 8.4px; }
