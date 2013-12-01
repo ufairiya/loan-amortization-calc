@@ -94,6 +94,11 @@
       $(amount).add(rate).add(term).add(month).add(year).add(display).bind('keyup change', function() {
         render();
       });
+      /* When the input looses focus then format the number */
+      $(amount).bind('change', function() {
+        var num = Number(getInput(amount.val())).toLocaleString('en');
+        amount.val(num);
+      });
       $(document).ready(function() {
         /* The variable tempate results will be accessable through this variable */
         _.templateSettings.variable = "rc";
