@@ -1,4 +1,8 @@
 form { margin-bottom: 0; }
+
+.radio:last-child {
+  margin-bottom: 0;
+}
 /* convert an area to a 10column grid */
 @media (min-width: 768px) {
   .cols10 .col-sm-2 { width: 20%; }
@@ -18,10 +22,10 @@ form { margin-bottom: 0; }
 
 @media print {
   body, table { font-size: 12px; }
-  h1 { font-size: 31.2px; }
-  h2 { font-size: 27px; }
-  h3 { font-size: 20.4px; }
-  .page-header {margin-top: 0;}
+  h1 { font-size: 31.2px; margin: 16.8px 0 8.4px; }
+  h2 { font-size: 27px; margin: 16.8px 0 8.4px; }
+  h3 { font-size: 20.4px; margin: 16.8px 0 8.4px; }
+  .page-header {margin: 0 0 16px;}
   /* copy sme stuff from bootstrap secreen min-width 768 to this print block */
   .form-inline .form-group {
     display: inline-block;
