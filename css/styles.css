@@ -7,6 +7,7 @@ form { margin-bottom: 0; }
 @media (min-width: 768px) {
   .cols10 .col-sm-2 { width: 20%; }
 }
+/* summery module */
 .summery {
   display: block;
   padding: 9px 14px;
@@ -18,7 +19,7 @@ form { margin-bottom: 0; }
 .summery h3 {
   margin: 10px 0;
 }
-#schedule thead td, #schedule tfoot td {font-weight: bold; }
+.table thead td, .table tfoot td {font-weight: bold; }
 
 @media print {
   body, table { font-size: 12px; }
