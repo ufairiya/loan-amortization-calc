@@ -24,9 +24,9 @@
 
         var data = finance.calculateAmortization(
           getInput(amount.val()),
-          getInput(term.val()) * 12,
+          getInput(term.val()),
           getInput(rate.val()),
-          new Date(year.val(), month.val() -1, 1)
+          new Date(year.val(), month.val(), 1)
         );
 
         /* Calculate the tallys */
@@ -103,9 +103,18 @@
         /* The variable tempate results will be accessable through this variable */
         _.templateSettings.variable = "rc";
         /*  pre-compile template for performance */
-          tableTemplate = _.template( $("#table-template").html() );
-          summeryTemplate = _.template( $("#summery-template").html() );
-          // summeryTemplate = _.template( $("#table-template").html() );
+        tableTemplate = _.template( $("#table-template").html() );
+        summeryTemplate = _.template( $("#summery-template").html() );
+
+        /* set the start date to the next month */
+        var currentDate = new Date(2013, 11, 1);
+        if (currentDate.getMonth() < 11) {
+          month.val(currentDate.getMonth() + 1);
+          year.val(currentDate.getFullYear());
+        } else {
+          month.val(0);
+          year.val(currentDate.getFullYear() + 1);
+        }
         /* Render the schedule with default values when document loaded. */
         render();
       });
