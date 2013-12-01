@@ -1,0 +1,53 @@
+form { margin-bottom: 0; }
+/* convert an area to a 10column grid */
+@media (min-width: 768px) {
+  .cols10 .col-sm-2 { width: 20%; }
+}
+.summery {
+  display: block;
+  padding: 9px 14px;
+  margin-bottom: 15px;
+  background-color: #f5f5f5;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+}
+.summery h3 {
+  margin: 10px 0;
+}
+#schedule thead td, #schedule tfoot td {font-weight: bold; }
+
+@media print {
+  body, table { font-size: 12px; }
+  h1 { font-size: 31.2px; }
+  h2 { font-size: 27px; }
+  h3 { font-size: 20.4px; }
+  .page-header {margin-top: 0;}
+  /* copy sme stuff from bootstrap secreen min-width 768 to this print block */
+  .form-inline .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+  /* reduce form size for print */
+  .form-control {
+    height: 30px; /* line-height + padding + border */
+  }
+  /* reduce padding for print */
+  .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+   padding: 4px;
+  }
+  .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11 {
+    float: left;
+  }
+  .col-sm-4 {
+    width: 33.33333333333333%;
+  }
+  .col-sm-3 {
+    width: 25%;
+  }
+  .col-sm-2 {
+    width: 16.666666666666664%;
+  }
+  /* convert an area to a 10column grid */
+  .cols10 .col-sm-2 { width: 20%; }
+}
