@@ -3,6 +3,8 @@
       var amount = $('#amount');
       var rate = $('#rate');
       var term = $('#term');
+      var termtime = $('#termtime');
+      var termInYears = true;
       var month = $('#month');
       var year = $('#year');
       var display = $('*[name=display]');
@@ -22,9 +24,14 @@
       var render = function() {
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+        if (termInYears == true) {
+          var termVal = getInput(term.val()) * 12;
+        } else {
+          var termVal = getInput(term.val());
+        }
         var data = finance.calculateAmortization(
           getInput(amount.val()),
-          getInput(term.val()),
+          termVal,
           getInput(rate.val()),
           new Date(year.val(), month.val(), 1)
         );
@@ -99,6 +106,21 @@
         var num = Number(getInput(amount.val())).toLocaleString('en');
         amount.val(num);
       });
+
+      termtime.find('.dropdown-menu a').bind('click', function(event) {
+        termInYears = !termInYears;
+        var text = termtime.find('.change').html();
+        var text2 = event.target.innerHTML;
+        termtime.find('.change').html(text2);
+        event.target.innerHTML = text;
+        if (text == 'Years ') {
+          term.val(term.val() * 12);
+        } else {
+          term.val(term.val() / 12);
+        }
+        render();
+      });
+
       $(document).ready(function() {
         /* The variable tempate results will be accessable through this variable */
         _.templateSettings.variable = "rc";
