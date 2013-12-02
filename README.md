@@ -1,4 +1,10 @@
-loan-amortization-calc
+Loan Amortization Schedule Calculator 
 ======================
 
-Amortization Schedule for a loan using JS
+Given a loan amount, term, and annual interest rate calculate the monthly payment, total interest paid, and create an amortization table. Interest is compounded monthly which is typical of most loans: mortgage, car, small business, etc. 
+
+The calculator has additional styling to make it print-friendly and works well on mobile devices.  It is written in Javascript and updates when an input is changed for a faster experience.
+
+[amortization-calc.cpagardens.com](http://amortization-calc.cpagardens.com/)
+
+&copy; 2013 CPA Gardens.
