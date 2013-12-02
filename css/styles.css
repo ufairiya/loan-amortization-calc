@@ -1,5 +1,9 @@
 form { margin-bottom: 0; }
 
+select.form-control {
+  padding: 6px;
+}
+
 .radio:last-child {
   margin-bottom: 0;
 }
