@@ -13,4 +13,4 @@ Thoughts for future improvement
 *   Mortgage options panel with PMI, property tax, etc.
 
 
-&copy; 2013 CPA Gardens.
+Sponsored by [CPA Gardens](http://www.cpagardens.com/) &copy; 2013 CPA Gardens.
